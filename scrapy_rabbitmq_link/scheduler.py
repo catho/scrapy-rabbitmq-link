@@ -162,7 +162,7 @@ class RabbitMQScheduler(Scheduler):
                             if hasattr(method_frame, 'delivery_tag') \
                             else None
                         request = Request(
-                            url=url,
+                            url=body,
                             meta=dict(delivery_tag=delivery_tag),
                             callback=self.spider._callback)
                         return self.spider._modify_request(request)
@@ -174,7 +174,7 @@ class RabbitMQScheduler(Scheduler):
                 msg = 'Queue (%s) is empty. Waiting for messages...'
                 self.waiting = True
                 logger.info(msg % self.queue.key)
-            time.sleep(10)
+            time.sleep(0.1)
             return None
 
     def has_pending_requests(self):
