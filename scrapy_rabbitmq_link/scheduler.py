@@ -162,7 +162,7 @@ class RabbitMQScheduler(Scheduler):
                             if hasattr(method_frame, 'delivery_tag') \
                             else None
                         request = Request(
-                            url=url,
+                            url=body,
                             meta=dict(delivery_tag=delivery_tag),
                             callback=self.spider._callback)
                         return self.spider._modify_request(request)
