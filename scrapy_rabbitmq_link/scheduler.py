@@ -155,20 +155,8 @@ class RabbitMQScheduler(Scheduler):
                     return self.spider._make_request(method_frame, headers,
                             body)
                 else:
-                    """ * Clause to be deleted in upcoming versions * """
-                    if hasattr(self.spider, '_callback') and\
-                        hasattr(self.spider, '_modify_request'):
-                        delivery_tag = method_frame.delivery_tag \
-                            if hasattr(method_frame, 'delivery_tag') \
-                            else None
-                        request = Request(
-                            url=url,
-                            meta=dict(delivery_tag=delivery_tag),
-                            callback=self.spider._callback)
-                        return self.spider._modify_request(request)
-                    else:
-                        msg = 'Please provide _make_request method in spider class.'
-                        raise NotImplementedError(msg)
+                    msg = 'Please provide _make_request method in spider class.'
+                    raise NotImplementedError(msg)
         else:
             if not self.waiting:
                 msg = 'Queue (%s) is empty. Waiting for messages...'
