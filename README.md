@@ -11,7 +11,7 @@ Using pip, type in your command-line prompt
 ```
 pip install scrapy-rabbitmq-link
 ```
- 
+
 Or clone the repo and inside the scrapy-rabbitmq-link directory, type
 
 ```
@@ -48,7 +48,7 @@ DOWNLOADER_MIDDLEWARES = {
 
 ```
 
-### Step 2: Add request building methods to Spider : _modify_request and _callback
+### Step 2: Add request building methods to Spider : _make_request and _callback
 
 #### Example: custom_spider.py
 
@@ -59,13 +59,15 @@ from scrapy.spiders import Spider
 class CustomSpider(Spider):
     """ Make requests using urls from RabbitMQ queue named same as spider
     """
-    
+
     name = 'custom_spider'
 
-    # modify a request before firing. request already contains url received from RabbitMQ
-    def _modify_request(self, request):
-        request.meta['time'] = time()
-        return request
+    # create a request from message received of RabbitMQ
+    def _make_request(self, method_frame, headers, body):
+        return Request(
+            url=body,
+            meta=dict(delivery_tag=method_frame.delivery_tag),
+            callback=self._callback)
 
     # callback to the response received
     def _callback(self, response):
@@ -123,7 +125,7 @@ See the [changelog](CHANGELOG.md) for release details.
 
 | Version | Release Date |
 | :-----: | :----------: |
-|  0.1.0  | 2016-08-23 |
+|  0.1.0  | 2016-08-23   |
 
 ## Copyright & License
 
