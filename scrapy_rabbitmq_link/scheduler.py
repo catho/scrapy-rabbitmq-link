@@ -162,7 +162,7 @@ class RabbitMQScheduler(Scheduler):
                 msg = 'Queue (%s) is empty. Waiting for messages...'
                 self.waiting = True
                 logger.info(msg % self.queue.key)
-            time.sleep(10)
+            time.sleep(0.1)
             return None
 
     def has_pending_requests(self):
